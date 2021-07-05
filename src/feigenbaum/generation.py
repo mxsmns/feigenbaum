@@ -26,7 +26,7 @@ def find_stable_value(
     precision : float
         target precision of difference between two successive values
     max_iterations : float
-        number of iterations to complete before raising StopIteration
+        number of iterations to complete before raising IndexError
 
     Returns
     -------
@@ -42,7 +42,7 @@ def find_stable_value(
             return StableValue(value, iteration, x, alpha, precision)
         previous_value = value
 
-    raise StopIteration("Values exhausted")
+    raise IndexError(f"Maximum number of iterations ({max_iterations}) exceeded")
 
 
 def iterate(

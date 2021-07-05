@@ -19,3 +19,8 @@ def test_iterate():
 def test_find_stable_value(x: float, alpha: float, precision: int, expected: float):
     stable_value = generation.find_stable_value(x, alpha)
     assert round(stable_value.value, precision) == expected
+
+
+def test_find_stable_value_exceeds_max_iterations():
+    with pytest.raises(IndexError):
+        generation.find_stable_value(0.5, 2.3, max_iterations=4)
