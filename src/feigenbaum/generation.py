@@ -1,4 +1,48 @@
+from dataclasses import dataclass
 from typing import Generator
+
+
+@dataclass
+class StableValue:
+    value: float
+    num_iterations: float
+    x: float
+    alpha: float
+    precision: float
+
+
+def find_stable_value(
+    x: float, alpha: float, precision: float = 1e-6, max_iterations: int = 1000
+) -> StableValue:
+    """Find value approached by the evolution equation
+    with an initial population x and growth value alpha.
+
+    Parameters
+    ----------
+    x : float
+        initial population ratio (0-1)
+    alpha : float
+        growth parameter
+    precision : float
+        target precision of difference between two successive values
+    max_iterations : float
+        number of iterations to complete before raising StopIteration
+
+    Returns
+    -------
+    StableValue
+    """
+    values = iterate(x, alpha, max_iterations)
+
+    previous_value = next(values)
+
+    for iteration, value in enumerate(values):
+        difference = abs(value - previous_value)
+        if difference <= precision:
+            return StableValue(value, iteration, x, alpha, precision)
+        previous_value = value
+
+    raise StopIteration("Values exhausted")
 
 
 def iterate(
